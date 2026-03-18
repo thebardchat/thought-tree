@@ -27,13 +27,26 @@ export default function ContextMenu({ menu, onClose, nodes, setNodes, onBranch, 
     try {
       const data = await expandNode(node.text);
       const suggestions = data.suggestions || [];
+
+      // Find depth of this node to calculate ring distance
+      let depth = 0;
+      let walk = node;
+      while (walk.parentId) { depth++; walk = nodes.find(n => n.id === walk.parentId) || { parentId: null }; }
+      const ringDist = 200 + (depth + 1) * 40;
+
+      // Find parent angle to fan outward from it
+      const parent = node.parentId ? nodes.find(n => n.id === node.parentId) : null;
+      const baseAngle = parent
+        ? Math.atan2(node.y - parent.y, node.x - parent.x)
+        : -Math.PI / 2;
+
+      const spread = Math.PI * 0.8;
       const newNodes = suggestions.map((text, i) => {
-        const angle = ((i / suggestions.length) * Math.PI * 2) - Math.PI / 2;
-        const dist = 200 + Math.random() * 40;
+        const angle = baseAngle - spread / 2 + (spread / (suggestions.length + 1)) * (i + 1);
         return {
           id: `n${Date.now()}_${i}`,
-          x: node.x + Math.cos(angle) * dist,
-          y: node.y + Math.sin(angle) * dist,
+          x: node.x + Math.cos(angle) * ringDist,
+          y: node.y + Math.sin(angle) * ringDist,
           text,
           parentId: node.id,
         };

@@ -13,13 +13,41 @@ export default function ThoughtTree({ nodes, setNodes, onContextMenu }) {
 
   const { onTouchStart, onTouchMove, onTouchEnd } = useTouchDrag(nodes, setNodes, onContextMenu);
 
+  const getDepth = (nodeId, allNodes) => {
+    let depth = 0;
+    let current = allNodes.find(n => n.id === nodeId);
+    while (current?.parentId) {
+      depth++;
+      current = allNodes.find(n => n.id === current.parentId);
+    }
+    return depth;
+  };
+
   const addChild = (parentId, px, py, e) => {
     e?.stopPropagation();
-    const angle = (Math.random() * Math.PI * 1.5) - Math.PI * 0.75;
-    const dist = 190 + Math.random() * 60;
-    const nx = { id: gid(), x: px + Math.cos(angle) * dist, y: py + Math.sin(angle) * dist, text: '', parentId };
-    setNodes(p => [...p, nx]);
-    setTimeout(() => { setEditing(nx.id); setEditText(''); }, 30);
+    setNodes(p => {
+      const siblings = p.filter(n => n.parentId === parentId);
+      const siblingCount = siblings.length;
+      const depth = getDepth(parentId, p) + 1;
+      const dist = 180 + depth * 40;
+
+      // Find angle of parent relative to its parent (or use 0 for root)
+      const parent = p.find(n => n.id === parentId);
+      const grandparent = parent?.parentId ? p.find(n => n.id === parent.parentId) : null;
+      let baseAngle = 0;
+      if (grandparent) {
+        baseAngle = Math.atan2(parent.y - grandparent.y, parent.x - grandparent.x);
+      }
+
+      // Spread children in a fan from the parent's outward direction
+      const spread = Math.PI * 0.8;
+      const step = siblingCount > 0 ? spread / (siblingCount + 1) : 0;
+      const angle = baseAngle - spread / 2 + step * (siblingCount + 1);
+
+      const nx = { id: gid(), x: px + Math.cos(angle) * dist, y: py + Math.sin(angle) * dist, text: '', parentId };
+      setTimeout(() => { setEditing(nx.id); setEditText(''); }, 30);
+      return [...p, nx];
+    });
   };
 
   const deleteNode = (id, e) => {

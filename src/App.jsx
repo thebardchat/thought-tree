@@ -7,17 +7,19 @@ import SearchBar from './components/SearchBar';
 import { useMapPersistence } from './hooks/useMapPersistence';
 import { useContextMenu } from './hooks/useContextMenu';
 
-const DEFAULT_NODES = [{ id: 'root', x: 420, y: 280, text: 'BRAIN DUMP', parentId: null }];
+const centerX = () => Math.round(window.innerWidth / 2 - 85);
+const centerY = () => Math.round((window.innerHeight - 44) / 2 - 26);
+const makeRoot = () => [{ id: 'root', x: centerX(), y: centerY(), text: 'BRAIN DUMP', parentId: null }];
 
 export default function App() {
-  const [nodes, setNodes] = useState(DEFAULT_NODES);
+  const [nodes, setNodes] = useState(makeRoot);
   const [title, setTitle] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
   const { menu, openMenu, closeMenu } = useContextMenu();
   const { mapId, saving, lastSaved, save, newMap, loadMap } = useMapPersistence(nodes, title);
 
   const handleNew = () => {
-    setNodes([{ id: 'root', x: 420, y: 280, text: 'BRAIN DUMP', parentId: null }]);
+    setNodes(makeRoot());
     setTitle('');
     newMap();
   };
@@ -29,19 +31,35 @@ export default function App() {
   };
 
   const handleBranch = useCallback((nodeId) => {
-    const node = nodes.find(n => n.id === nodeId);
-    if (!node) return;
-    const angle = (Math.random() * Math.PI * 1.5) - Math.PI * 0.75;
-    const dist = 190 + Math.random() * 60;
-    const newNode = {
-      id: `n${Date.now()}`,
-      x: node.x + Math.cos(angle) * dist,
-      y: node.y + Math.sin(angle) * dist,
-      text: '',
-      parentId: nodeId,
-    };
-    setNodes(p => [...p, newNode]);
-  }, [nodes]);
+    setNodes(p => {
+      const node = p.find(n => n.id === nodeId);
+      if (!node) return p;
+
+      const siblings = p.filter(n => n.parentId === nodeId);
+      let depth = 0;
+      let walk = node;
+      while (walk.parentId) { depth++; walk = p.find(n => n.id === walk.parentId) || { parentId: null }; }
+      const dist = 200 + (depth + 1) * 40;
+
+      const parent = node.parentId ? p.find(n => n.id === node.parentId) : null;
+      const baseAngle = parent
+        ? Math.atan2(node.y - parent.y, node.x - parent.x)
+        : -Math.PI / 2;
+
+      const spread = Math.PI * 0.8;
+      const count = siblings.length;
+      const angle = baseAngle - spread / 2 + (spread / (count + 2)) * (count + 1);
+
+      const newNode = {
+        id: `n${Date.now()}`,
+        x: node.x + Math.cos(angle) * dist,
+        y: node.y + Math.sin(angle) * dist,
+        text: '',
+        parentId: nodeId,
+      };
+      return [...p, newNode];
+    });
+  }, []);
 
   const handleEdit = useCallback(() => {}, []);
 
