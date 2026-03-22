@@ -1,3 +1,7 @@
+<div align="center"><img src=".github/assets/banner.png" alt="Thought Tree" width="100%"></div>
+
+[![Constitution](https://img.shields.io/badge/Constitution-ShaneTheBrain-blue)](https://github.com/thebardchat/constitution)
+
 # 🌳 thebardchat/thought-tree
 
 > A React-based mind-mapping and brain-dump app with an interactive visual canvas.
@@ -52,3 +56,11 @@ All repos in this ecosystem run on local-first hardware:
 ---
 
 *[@thebardchat](https://github.com/thebardchat) · Hazel Green, Alabama*
+
+---
+
+<div align="center">
+
+*Part of the [ShaneBrain Ecosystem](https://github.com/thebardchat) · Built under the [Constitution](https://github.com/thebardchat/constitution)*
+
+</div>
