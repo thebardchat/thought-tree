@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#030a06;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#041209;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#020804;stop-opacity:1"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="greenglow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Background mind map (right side, organic) -->
+  <g opacity="0.2" fill="none" stroke="#10b981" stroke-width="1.5">
+    <!-- Root node (right side) -->
+    <circle cx="950" cy="300" r="30" fill="#041209" stroke="#10b981" stroke-width="2"/>
+    <!-- Child nodes -->
+    <circle cx="850" cy="200" r="18"/>
+    <circle cx="1080" cy="180" r="22"/>
+    <circle cx="1100" cy="380" r="18"/>
+    <circle cx="880" cy="420" r="15"/>
+    <circle cx="1020" cy="460" r="20"/>
+    <!-- Grandchildren -->
+    <circle cx="780" cy="140" r="10"/>
+    <circle cx="810" cy="260" r="10"/>
+    <circle cx="1060" cy="100" r="12"/>
+    <circle cx="1150" cy="250" r="10"/>
+    <circle cx="1160" cy="430" r="10"/>
+    <circle cx="960" cy="520" r="12"/>
+    <circle cx="820" cy="500" r="10"/>
+    <!-- Connections (organic curves approximated as lines) -->
+    <line x1="950" y1="300" x2="850" y2="200"/>
+    <line x1="950" y1="300" x2="1080" y2="180"/>
+    <line x1="950" y1="300" x2="1100" y2="380"/>
+    <line x1="950" y1="300" x2="880" y2="420"/>
+    <line x1="950" y1="300" x2="1020" y2="460"/>
+    <line x1="850" y1="200" x2="780" y2="140"/>
+    <line x1="850" y1="200" x2="810" y2="260"/>
+    <line x1="1080" y1="180" x2="1060" y2="100"/>
+    <line x1="1100" y1="380" x2="1150" y2="250"/>
+    <line x1="1100" y1="380" x2="1160" y2="430"/>
+    <line x1="1020" y1="460" x2="960" y2="520"/>
+    <line x1="880" y1="420" x2="820" y2="500"/>
+    <!-- Root dot -->
+    <circle cx="950" cy="300" r="5" fill="#10b981" stroke="none"/>
+  </g>
+
+  <!-- Corner brackets -->
+  <g stroke="#10b981" stroke-width="2" fill="none" opacity="0.5">
+    <polyline points="20,20 20,70 70,70"/>
+    <polyline points="1180,20 1180,70 1130,70"/>
+    <polyline points="20,610 20,560 70,560"/>
+    <polyline points="1180,610 1180,560 1130,560"/>
+  </g>
+
+  <!-- Main title -->
+  <text x="100" y="170" font-family="monospace" font-size="78" font-weight="bold" fill="#10b981" filter="url(#greenglow)">THOUGHT</text>
+  <text x="100" y="258" font-family="monospace" font-size="78" font-weight="bold" fill="#6ee7b7" filter="url(#glow)">TREE</text>
+
+  <!-- Divider -->
+  <line x1="100" y1="278" x2="700" y2="278" stroke="#10b981" stroke-width="2" opacity="0.4"/>
+
+  <!-- Tagline -->
+  <text x="100" y="315" font-family="monospace" font-size="18" fill="#34d399">React mind-mapping · Node-based brain dump tool</text>
+
+  <!-- Feature pills -->
+  <g font-family="monospace" font-size="13">
+    <rect x="100" y="340" width="165" height="28" rx="4" fill="#041209" stroke="#065f46" stroke-width="1"/>
+    <text x="182" y="358" text-anchor="middle" fill="#6ee7b7">Double-click: Create</text>
+
+    <rect x="277" y="340" width="145" height="28" rx="4" fill="#041209" stroke="#065f46" stroke-width="1"/>
+    <text x="349" y="358" text-anchor="middle" fill="#6ee7b7">Drag: Rearrange</text>
+
+    <rect x="434" y="340" width="145" height="28" rx="4" fill="#041209" stroke="#065f46" stroke-width="1"/>
+    <text x="506" y="358" text-anchor="middle" fill="#6ee7b7">Branch: Expand</text>
+  </g>
+
+  <!-- Tech stack -->
+  <g font-family="monospace">
+    <text x="100" y="400" font-size="14" fill="#064e3b">React · Canvas API · Zero External Dependencies</text>
+    <text x="100" y="425" font-size="14" fill="#064e3b">Dark theme · Full-screen canvas · Organic node connections</text>
+  </g>
+
+  <!-- Node visualization (small demo nodes left side) -->
+  <g filter="url(#glow)" opacity="0.6">
+    <circle cx="100" cy="480" r="15" fill="#041209" stroke="#10b981" stroke-width="2"/>
+    <circle cx="100" cy="480" r="4" fill="#10b981"/>
+    <circle cx="155" cy="455" r="10" fill="#041209" stroke="#6ee7b7" stroke-width="1.5"/>
+    <circle cx="155" cy="505" r="12" fill="#041209" stroke="#6ee7b7" stroke-width="1.5"/>
+    <circle cx="210" cy="445" r="8" fill="#041209" stroke="#34d399" stroke-width="1"/>
+    <circle cx="215" cy="480" r="8" fill="#041209" stroke="#34d399" stroke-width="1"/>
+    <circle cx="210" cy="515" r="7" fill="#041209" stroke="#34d399" stroke-width="1"/>
+    <line x1="100" y1="480" x2="155" y2="455" stroke="#10b981" stroke-width="1"/>
+    <line x1="100" y1="480" x2="155" y2="505" stroke="#10b981" stroke-width="1"/>
+    <line x1="155" y1="455" x2="210" y2="445" stroke="#6ee7b7" stroke-width="1"/>
+    <line x1="155" y1="455" x2="215" y2="480" stroke="#6ee7b7" stroke-width="1"/>
+    <line x1="155" y1="505" x2="210" y2="515" stroke="#6ee7b7" stroke-width="1"/>
+  </g>
+
+  <!-- Bottom bar -->
+  <rect x="0" y="580" width="1200" height="50" fill="#020804" opacity="0.95"/>
+  <line x1="0" y1="580" x2="1200" y2="580" stroke="#10b981" stroke-width="1" opacity="0.4"/>
+  <text x="30" y="611" font-family="monospace" font-size="13" fill="#065f46">github.com/thebardchat/thought-tree</text>
+  <text x="1170" y="611" text-anchor="end" font-family="monospace" font-size="13" fill="#065f46">Built by Shane + Claude Anthropic</text>
+</svg>
