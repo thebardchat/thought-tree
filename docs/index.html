@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thought Tree — React Mind Mapping App</title>
+  <meta name="description" content="React-based mind-mapping app. Node-based brain dump tool — double-click to create nodes, drag to rearrange, branch to expand ideas. Dark-themed full-screen canvas."/>
+  <meta property="og:image" content="social-card.svg"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:#030a06;color:#d1fae5;font-family:'Courier New',monospace;overflow-x:hidden;min-height:100vh;padding-bottom:60px}
+    canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+    .content{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:2rem 1.5rem}
+    .hero{text-align:center;padding:4rem 0 2rem}
+    .hero-badge{display:inline-block;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#10b981;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.4rem 1.2rem;border-radius:2px;margin-bottom:2rem}
+    h1{font-size:clamp(2.5rem,7vw,5rem);font-weight:900;letter-spacing:0.03em;line-height:1;color:#d1fae5;text-shadow:0 0 40px rgba(16,185,129,0.4)}
+    .subtitle{font-size:1rem;color:#6ee7b7;margin:1rem 0 2rem;letter-spacing:0.08em}
+    .referral-bar{border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.05);border-radius:4px;padding:0.8rem 1.5rem;text-align:center;margin:0 auto 2rem;max-width:600px;font-size:0.8rem}
+    .referral-bar a{color:#f59e0b}
+    .section{margin:3rem 0;padding:2rem;background:rgba(0,20,10,0.6);border:1px solid rgba(16,185,129,0.2);border-radius:4px}
+    .section-title{font-size:0.85rem;letter-spacing:0.25em;text-transform:uppercase;color:#10b981;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.8rem}
+    .section-title::after{content:'';flex:1;height:1px;background:rgba(16,185,129,0.2)}
+    .how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem}
+    .how-card{background:rgba(0,15,8,0.7);border:1px solid rgba(16,185,129,0.2);border-radius:4px;padding:1.5rem;text-align:center;transition:border-color 0.3s,transform 0.3s}
+    .how-card:hover{border-color:rgba(16,185,129,0.5);transform:translateY(-3px)}
+    .how-num{font-size:2.5rem;font-weight:bold;color:#10b981;opacity:0.5;margin-bottom:0.5rem}
+    .how-label{font-size:1rem;font-weight:bold;color:#6ee7b7;margin-bottom:0.5rem}
+    .how-desc{font-size:0.8rem;color:#065f46;line-height:1.6}
+    .feature-list{list-style:none}
+    .feature-list li{padding:0.6rem 0;border-bottom:1px solid rgba(6,78,59,0.5);color:#6ee7b7;font-size:0.9rem;display:flex;gap:0.8rem}
+    .feature-list li::before{content:'▸';color:#10b981;flex-shrink:0}
+    .tech-tags{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:1rem}
+    .tag{background:rgba(0,15,8,0.7);border:1px solid rgba(16,185,129,0.2);color:#10b981;font-size:0.75rem;padding:0.3rem 0.8rem;border-radius:2px;letter-spacing:0.1em}
+    .links{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin:2rem 0}
+    .btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.8rem 2rem;font-family:monospace;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;border-radius:3px;transition:all 0.2s}
+    .btn-primary{background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.5);color:#10b981}
+    .btn-primary:hover{background:rgba(16,185,129,0.25)}
+    .btn-secondary{background:rgba(0,0,0,0.3);border:1px solid rgba(6,78,59,0.5);color:#065f46}
+    .btn-secondary:hover{background:rgba(0,15,8,0.5)}
+    .footer{text-align:center;padding:2rem 0 1rem;font-size:0.8rem;color:#064e3b;border-top:1px solid rgba(6,78,59,0.3);margin-top:3rem}
+    kbd{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#6ee7b7;padding:0.1rem 0.4rem;border-radius:3px;font-family:monospace;font-size:0.85em}
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="content">
+  <div class="referral-bar">
+    <strong>Try Claude free for 2 weeks</strong> — the AI behind this entire ecosystem. <a href="https://claude.ai/referral/4fAMYN9Ing">Start your free trial →</a>
+  </div>
+
+  <div class="hero">
+    <div class="hero-badge">React Mind Mapping</div>
+    <h1>Thought<br>Tree</h1>
+    <div class="subtitle">Node-based brain dump · Full-screen dark canvas · Zero dependencies</div>
+  </div>
+
+  <div class="links">
+    <a href="https://github.com/thebardchat/thought-tree" class="btn btn-primary">View on GitHub →</a>
+    <a href="https://github.com/thebardchat" class="btn btn-secondary">thebardchat</a>
+  </div>
+
+  <div class="section">
+    <div class="section-title">How It Works</div>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">01</div>
+        <div class="how-label">Double Click</div>
+        <div class="how-desc">Double-click anywhere on the canvas to spawn a new thought node</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">02</div>
+        <div class="how-label">Drag & Drop</div>
+        <div class="how-desc">Drag nodes to rearrange your mental map exactly how your brain sees it</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">03</div>
+        <div class="how-label">Branch Out</div>
+        <div class="how-desc">Click branch to expand a node and grow your idea tree organically</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Features</div>
+    <ul class="feature-list">
+      <li>Full-screen canvas — your entire screen becomes a mind map</li>
+      <li>React-powered with zero external UI dependencies</li>
+      <li>Dark theme designed for late-night brain dumps</li>
+      <li>Node connections visualized as organic flowing branches</li>
+      <li>Click to select, drag to move, double-click to create</li>
+      <li>Persistent session state — your tree survives reloads</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Keyboard Shortcuts</div>
+    <ul class="feature-list">
+      <li><kbd>Double Click</kbd> — Create new node at cursor position</li>
+      <li><kbd>Drag</kbd> — Move any node freely on the canvas</li>
+      <li><kbd>Click Node</kbd> — Select and edit node text</li>
+      <li><kbd>Branch</kbd> — Add child node from selected parent</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Technology</div>
+    <div class="tech-tags">
+      <span class="tag">React</span>
+      <span class="tag">Canvas API</span>
+      <span class="tag">Zero External Deps</span>
+      <span class="tag">Dark Theme</span>
+      <span class="tag">Mind Mapping</span>
+      <span class="tag">Node Graph</span>
+      <span class="tag">Brain Dump</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Built by Shane Brazelton + Claude Anthropic · Hazel Green, AL</p>
+    <p style="margin-top:0.5rem"><a href="https://github.com/thebardchat/thought-tree" style="color:#064e3b">github.com/thebardchat/thought-tree</a></p>
+  </div>
+</div>
+
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:999;background:linear-gradient(90deg,#060910,#0b1124,#060910);border-top:1px solid #1e3060;padding:0.6rem 1.5rem;display:flex;align-items:center;justify-content:center;gap:1.2rem;font-family:monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;">
+  <span style="width:7px;height:7px;border-radius:50%;background:#f59e0b;box-shadow:0 0 8px #f59e0b;display:inline-block;"></span>
+  <span style="color:#3d5a78;">Try Claude free for 2 weeks —</span>
+  <a href="https://claude.ai/referral/4fAMYN9Ing" target="_blank" rel="noopener" style="color:#00b4d8;text-decoration:none;">Start your free trial →</a>
+  <span style="color:#3d5a78;">· AI behind this ecosystem</span>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+function resize(){
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  initNodes();
+}
+
+// Mind map nodes (floating demo)
+let nodes = [];
+function initNodes(){
+  nodes = [];
+  const count = 18;
+  for(let i=0;i<count;i++){
+    nodes.push({
+      x: Math.random()*W,
+      y: Math.random()*H,
+      vx: (Math.random()-0.5)*0.4,
+      vy: (Math.random()-0.5)*0.4,
+      r: Math.random()*18+8,
+      connections: []
+    });
+  }
+  // Create tree-like connections
+  for(let i=1;i<nodes.length;i++){
+    const parent = Math.floor(Math.random()*(i));
+    nodes[parent].connections.push(i);
+  }
+}
+resize();
+window.addEventListener('resize', resize);
+
+function draw(){
+  ctx.fillStyle = 'rgba(3,10,6,0.15)';
+  ctx.fillRect(0,0,W,H);
+
+  const time = Date.now()*0.0005;
+
+  nodes.forEach((n,i)=>{
+    n.x += n.vx;
+    n.y += n.vy;
+    // Gentle bounce
+    if(n.x<50)n.vx+=0.05;
+    if(n.x>W-50)n.vx-=0.05;
+    if(n.y<50)n.vy+=0.05;
+    if(n.y>H-50)n.vy-=0.05;
+    n.vx *= 0.999;
+    n.vy *= 0.999;
+
+    // Draw connections
+    n.connections.forEach(ci=>{
+      const c = nodes[ci];
+      const pulse = 0.15+0.1*Math.sin(time*2+i);
+      // Bezier curve for organic feel
+      const midX = (n.x+c.x)/2 + Math.sin(time+i)*30;
+      const midY = (n.y+c.y)/2 + Math.cos(time+i)*30;
+      ctx.beginPath();
+      ctx.moveTo(n.x, n.y);
+      ctx.quadraticCurveTo(midX, midY, c.x, c.y);
+      ctx.strokeStyle = `rgba(16,185,129,${pulse})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+  });
+
+  // Draw nodes on top
+  nodes.forEach((n,i)=>{
+    const pulse = 0.6+0.3*Math.sin(time*1.5+i*0.7);
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(3,20,12,${pulse})`;
+    ctx.fill();
+    ctx.strokeStyle = `rgba(16,185,129,${pulse*0.7})`;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Inner dot
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, 3, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(16,185,129,${pulse})`;
+    ctx.fill();
+  });
+
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>
