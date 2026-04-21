@@ -4,6 +4,12 @@
 
 # 🌳 thebardchat/thought-tree
 
+> **Try Claude free for 2 weeks** — the AI behind this entire ecosystem. [Start your free trial →](https://claude.ai/referral/4fAMYN9Ing)
+
+---
+
+
+
 > A React-based mind-mapping and brain-dump app with an interactive visual canvas.
 
 ---
